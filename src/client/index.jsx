@@ -5,19 +5,19 @@ import ReactDOM from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import { createStore, combineReducers } from 'redux';
+import { createStore, applyMiddleware, compose } from 'redux';
+import thunkMiddleware from 'redux-thunk';
+import { logger } from 'redux-logger';
 
 import App from './app';
 import { APP_CONTAINER_SELECTOR } from '../shared/config';
 import { isProd } from '../shared/util';
+import rootReducer from './reducers';
+
 
 // eslint-disable-next-line no-underscore-dangle
-const tools = window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__();
-
-const store = createStore(
-  combineReducers({}),
-  isProd ? undefined : tools,
-);
+const composeEnhancers = (isProd ? null : window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) || compose;
+const store = createStore(rootReducer, applyMiddleware(thunkMiddleware, logger));
 
 const rootEl = document.querySelector(APP_CONTAINER_SELECTOR);
 

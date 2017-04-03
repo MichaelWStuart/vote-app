@@ -1,24 +1,50 @@
-import React from 'react';
-import { Switch } from 'react-router';
+import React, { PropTypes } from 'react';
+import { Switch, withRouter } from 'react-router';
 import { Route } from 'react-router-dom';
+import { connect } from 'react-redux';
+
 import Nav from './component/nav';
 import PollsPage from './component/polls';
 import LoginPage from './component/login';
 import SignUpPage from './component/sign-up';
-import {
-  LOGIN_PAGE_ROUTE,
-  SIGN_UP_PAGE_ROUTE,
-  POLLS_PAGE_ROUTE,
-} from '../shared/routes';
+import TestPage from './component/test';
+import NotFoundPage from './component/not-found';
 
-const App = () =>
-  <div>
-    <Nav />
-    <Switch>
-      <Route exact path={POLLS_PAGE_ROUTE} render={() => <PollsPage />} />
-      <Route path={LOGIN_PAGE_ROUTE} render={() => <LoginPage />} />
-      <Route path={SIGN_UP_PAGE_ROUTE} render={() => <SignUpPage />} />
-    </Switch>
-  </div>;
+class App extends React.Component {
 
-export default App;
+  componentWillReceiveProps(nextProps) {
+    if (this.props.username !== nextProps.username) {
+      this.props.history.push('/polls');
+    }
+  }
+
+  render() {
+    return (
+      <div>
+        <Nav />
+        <Switch>
+          <Route exact path={'/polls'} render={() => <PollsPage />} />
+          <Route path={'/login'} render={() => <LoginPage />} />
+          <Route path={'/sign-up'} render={() => <SignUpPage />} />
+          <Route path={'/test'} render={() => <TestPage />} />
+          <Route component={NotFoundPage} />
+        </Switch>
+      </div>
+    );
+  }
+}
+
+App.propTypes = {
+  username: PropTypes.string.isRequired,
+  history: PropTypes.object.isRequired,
+  location: PropTypes.object.isRequired,
+  match: PropTypes.object.isRequired,
+};
+
+const mapStateToProps = state => ({
+  username: state.user.username,
+});
+
+export default connect(mapStateToProps)(withRouter(App));
+
+// export default App;

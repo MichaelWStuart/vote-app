@@ -8,8 +8,8 @@ const Test = Props =>
     <button onClick={Props.handleClick}>Make Magic</button>
   </div>;
 
-const mapDispatchToProps = () => ({
-  handleClick: () => fetchUserData(),
+const mapDispatchToProps = dispatch => ({
+  handleClick: () => dispatch(fetchUserData()),
 });
 
 export default connect(null, mapDispatchToProps)(Test);

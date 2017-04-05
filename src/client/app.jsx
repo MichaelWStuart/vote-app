@@ -7,7 +7,6 @@ import Nav from './component/nav';
 import PollsPage from './component/polls';
 import LoginPage from './component/login';
 import SignUpPage from './component/sign-up';
-import TestPage from './component/test';
 import NotFoundPage from './component/not-found';
 
 class App extends React.Component {
@@ -26,9 +25,9 @@ class App extends React.Component {
           <Route exact path={'/polls'} render={() => <PollsPage />} />
           <Route path={'/login'} render={() => <LoginPage />} />
           <Route path={'/sign-up'} render={() => <SignUpPage />} />
-          <Route path={'/test'} render={() => <TestPage />} />
           <Route component={NotFoundPage} />
         </Switch>
+        {this.props.username.length > 0 && <button>New Poll</button>}
       </div>
     );
   }
@@ -46,5 +45,3 @@ const mapStateToProps = state => ({
 });
 
 export default connect(mapStateToProps)(withRouter(App));
-
-// export default App;

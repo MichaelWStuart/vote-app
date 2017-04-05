@@ -16,27 +16,39 @@ const userSchema = new mongoose.Schema({ username: String, password: String });
 const User = mongoose.model('user', userSchema);
 
 const app = express();
-
+app.use(bodyParser.json());
 app.use(STATIC_PATH, express.static('dist'));
 app.use(STATIC_PATH, express.static('public'));
-
-app.use(bodyParser.urlencoded({ extended: true }));
-
-app.get('/magic', (req, res) => {
-  User.findById('58e09d04eec44d35727c990d', (err, result) => {
-    res.send(result);
-  });
-});
 
 app.get('*', (req, res) => {
   res.send(renderApp(APP_NAME));
 });
 
-// eslint-disable-next-line
-app.post('/create', (req, res) => {
-// eslint-disable-next-line
-  User.create({ username: req.body.username, password: req.body.password }, (err, result) => {
-    console.log(result);
+app.post('/sign-up', (req, res) => {
+  const username = req.body.username;
+  const password = req.body.password;
+  User.find({ username }, (err, response) => {
+    if (response.length === 0) {
+      User.create({ username, password }, () => {
+        res.send({ code: 0, username });
+      });
+    } else {
+      res.send({ code: 1 });
+    }
+  });
+});
+
+app.post('/login', (req, res) => {
+  const username = req.body.username;
+  const password = req.body.password;
+  User.find({ username }, (err, response) => {
+    if (response.length === 0) {
+      res.send({ code: 2 });
+    } else if (password !== response[0].password) {
+      res.send({ code: 3 });
+    } else {
+      res.send({ code: 0, username });
+    }
   });
 });
 

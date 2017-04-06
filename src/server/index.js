@@ -15,10 +15,25 @@ mongoose.connect(mongodb, err => console.log(err));
 const userSchema = new mongoose.Schema({ username: String, password: String });
 const User = mongoose.model('user', userSchema);
 
+const pollSchema = new mongoose.Schema({ title: String });
+const Poll = mongoose.model('poll', pollSchema);
+
 const app = express();
 app.use(bodyParser.json());
 app.use(STATIC_PATH, express.static('dist'));
 app.use(STATIC_PATH, express.static('public'));
+
+app.get('/get-polls', (req, res) => {
+  Poll.find({}, (err, polls) => res.send(polls));
+});
+
+app.get('/polls/:input', (req, res) => {
+  //eslint-disable-next-line
+  const _id = req.params.input;
+  Poll.findById({ _id }, (err, poll) => {
+    res.send(poll);
+  });
+});
 
 app.get('*', (req, res) => {
   res.send(renderApp(APP_NAME));
@@ -50,6 +65,11 @@ app.post('/login', (req, res) => {
       res.send({ code: 0, username });
     }
   });
+});
+
+app.post('/new-poll', (req, res) => {
+  const title = req.body.title;
+  Poll.create({ title }, () => res.send(req.body));
 });
 
 app.listen(WEB_PORT, () => {

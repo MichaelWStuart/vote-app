@@ -4,7 +4,8 @@ import {
   LOGIN,
   LOGOUT,
   LOGIN_ERROR,
-  CLEAR_ERROR,
+  ADD_POLL,
+  VIEW_POLL,
 } from './actions';
 
 const initialUserState = {
@@ -31,8 +32,36 @@ const errorReducer = (state = initialErrorState, action) => {
   switch (action.type) {
     case LOGIN_ERROR:
       return { error: action.payload };
-    case CLEAR_ERROR:
-      return initialErrorState;
+    default: {
+      return state;
+    }
+  }
+};
+
+const initialPollsState = {
+  polls: [],
+};
+
+const pollsReducer = (state = initialPollsState, action) => {
+  switch (action.type) {
+    case ADD_POLL:
+      return { polls: Object.assign({}, state).polls.concat(action.payload) };
+    default: {
+      return state;
+    }
+  }
+};
+
+const initialPollIdState = {
+  title: '',
+  id: '',
+};
+
+const currentPollReducer = (state = initialPollIdState, action) => {
+  switch (action.type) {
+    case VIEW_POLL:
+      // eslint-disable-next-line
+      return { title: action.payload.title, id: action.payload._id };
     default: {
       return state;
     }
@@ -42,6 +71,8 @@ const errorReducer = (state = initialErrorState, action) => {
 const rootReducer = combineReducers({
   user: userReducer,
   error: errorReducer,
+  polls: pollsReducer,
+  currentPoll: currentPollReducer,
 });
 
 export default rootReducer;

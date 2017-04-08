@@ -1,11 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import { logIn } from '../actions';
+import register from '../actions/async-creators/register';
 
-const LoginPage = Props =>
+const SignUpPage = Props =>
   <div>
-    {Props.error.length > 0 && <div>{Props.error}</div>}
     <form onSubmit={Props.handleClick}>
       <input type="text" placeholder="username" name="username" />
       <input type="password" placeholder="password" name="password" />
@@ -13,14 +12,10 @@ const LoginPage = Props =>
     </form>
   </div>;
 
-const mapStateToProps = state => ({
-  error: state.error.error,
-});
-
 const mapDispatchToProps = dispatch => ({
   handleClick: (event) => {
     event.preventDefault();
-    dispatch(logIn(
+    dispatch(register(
       {
         username: event.target.elements.username.value,
         password: event.target.elements.password.value,
@@ -29,4 +24,4 @@ const mapDispatchToProps = dispatch => ({
   },
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(LoginPage);
+export default connect(null, mapDispatchToProps)(SignUpPage);

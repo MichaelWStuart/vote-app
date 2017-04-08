@@ -1,34 +1,42 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
+import passport from 'passport';
+import LocalStrategy from 'passport-local';
+import session from 'express-session';
 
 import { APP_NAME, STATIC_PATH, WEB_PORT } from '../shared/config';
 import { isProd } from '../shared/util';
 import renderApp from './render-app';
+import User from './models/user';
+import Poll from './models/poll';
 
-//eslint-disable-next-line
+// eslint-disable-next-line global-require
 if (!isProd) require('dotenv').load();
+
 const mongodb = `mongodb://${process.env.UNAME}:${process.env.PASS}@${process.env.LOC}:${process.env.MDBPORT}/vote-app`;
-//eslint-disable-next-line
-mongoose.connect(mongodb, err => console.log(err));
-
-const userSchema = new mongoose.Schema({ username: String, password: String });
-const User = mongoose.model('user', userSchema);
-
-const pollSchema = new mongoose.Schema({ title: String });
-const Poll = mongoose.model('poll', pollSchema);
-
+mongoose.connect(mongodb);
 const app = express();
+const MongoStore = require('connect-mongo')(session);
+
+app.use(session({
+  secret: process.env.SECRET,
+  resave: false,
+  saveUninitialized: false,
+  store: new MongoStore({ mongooseConnection: mongoose.connection }),
+}));
+
+passport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+app.use(passport.initialize());
+app.use(passport.session());
+
 app.use(bodyParser.json());
 app.use(STATIC_PATH, express.static('dist'));
 app.use(STATIC_PATH, express.static('public'));
 
-app.get('/get-polls', (req, res) => {
-  Poll.find({}, (err, polls) => res.send(polls));
-});
-
 app.get('/polls/:input', (req, res) => {
-  //eslint-disable-next-line
   const _id = req.params.input;
   Poll.findById({ _id }, (err, poll) => {
     res.send(poll);
@@ -36,44 +44,49 @@ app.get('/polls/:input', (req, res) => {
 });
 
 app.get('*', (req, res) => {
-  res.send(renderApp(APP_NAME));
+  const { user } = req;
+  Poll.find({}, (err, polls) => res.send(renderApp(APP_NAME, user, polls)));
 });
 
-app.post('/sign-up', (req, res) => {
+app.post('/register', (req, res) => {
   const username = req.body.username;
-  const password = req.body.password;
-  User.find({ username }, (err, response) => {
-    if (response.length === 0) {
-      User.create({ username, password }, () => {
-        res.send({ code: 0, username });
+  const newUser = new User({ username });
+  User.register(newUser, req.body.password, (err, user) => {
+    if (!user) res.send(err);
+    else {
+      const credentials = { username, _id: user._id };
+      passport.authenticate('local')(req, res, () => {
+        res.send({ name: 'Success', credentials });
       });
-    } else {
-      res.send({ code: 1 });
     }
   });
 });
 
 app.post('/login', (req, res) => {
-  const username = req.body.username;
-  const password = req.body.password;
-  User.find({ username }, (err, response) => {
-    if (response.length === 0) {
-      res.send({ code: 2 });
-    } else if (password !== response[0].password) {
-      res.send({ code: 3 });
-    } else {
-      res.send({ code: 0, username });
+  passport.authenticate('local', (err, user) => {
+    if (!user) res.send({ name: 'Error', message: 'Invalid username or password' });
+    else {
+      req.logIn(user, () => {
+        const credentials = { username: user.username, _id: user._id };
+        res.send({ name: 'Success', credentials });
+      });
     }
-  });
+  })(req, res);
+});
+
+app.post('/logout', (req, res) => {
+  req.logout();
+  res.end();
 });
 
 app.post('/new-poll', (req, res) => {
-  const title = req.body.title;
-  Poll.create({ title }, () => res.send(req.body));
+  Poll.create({ title: req.body.title, _authorId: req.user._id }, (err, poll) => {
+    res.send(poll);
+  });
 });
 
 app.listen(WEB_PORT, () => {
   // eslint-disable-next-line no-console
   console.log(`Server running on port ${WEB_PORT} ${isProd ? '(production)' :
-  '(development).\nKeep "yarn dev:wds" running in an other terminal'}.`);
+    '(development).\nKeep "yarn dev:wds" running in an other terminal'}.`);
 });

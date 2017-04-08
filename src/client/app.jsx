@@ -3,18 +3,18 @@ import { Switch, withRouter } from 'react-router';
 import { Route, NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-import Nav from './component/nav';
-import PollsPage from './component/polls';
-import LoginPage from './component/login';
-import SignUpPage from './component/sign-up';
-import NotFoundPage from './component/not-found';
-import NewPollPage from './component/new-poll';
-import CurrentPollPage from './component/current-poll';
+import Nav from './components/nav';
+import PollsPage from './components/polls';
+import LoginPage from './components/login';
+import SignUpPage from './components/sign-up';
+import NotFoundPage from './components/not-found';
+import NewPollPage from './components/new-poll';
+import CurrentPollPage from './components/current-poll';
 
 class App extends React.Component {
 
   componentWillReceiveProps(nextProps) {
-    const userJustLoggedIn = !!(this.props.username !== nextProps.username);
+    const userJustLoggedIn = !!(this.props.user !== nextProps.user);
     const newPollWasCreated = !!(this.props.polls.length !== nextProps.polls.length);
     if (userJustLoggedIn || newPollWasCreated) {
       this.props.history.push('/polls');
@@ -36,7 +36,7 @@ class App extends React.Component {
           <Route path={'/new-poll'} render={() => <NewPollPage />} />
           <Route component={NotFoundPage} />
         </Switch>
-        {this.props.username.length > 0 &&
+        {this.props.user &&
           <NavLink to={'/new-poll'}><button>New Poll</button></NavLink>}
       </div>
     );
@@ -44,7 +44,7 @@ class App extends React.Component {
 }
 
 App.propTypes = {
-  username: PropTypes.string.isRequired,
+  user: PropTypes.string.isRequired,
   polls: PropTypes.array.isRequired,
   pollId: PropTypes.string.isRequired,
   history: PropTypes.object.isRequired,
@@ -53,9 +53,9 @@ App.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  username: state.user.username,
+  user: state.user.username,
   polls: state.polls.polls,
-  pollId: state.currentPoll.id,
+  pollId: state.poll.id,
 });
 
 export default connect(mapStateToProps)(withRouter(App));

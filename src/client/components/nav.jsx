@@ -1,12 +1,11 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
-
-import logout from '../actions';
+import asyncLogout from '../actions/async-creators/logout';
 
 const Nav = Props =>
   <nav>
-    {Props.username.length > 0 ? (
+    {Props.user ? (
       <NavLink onClick={Props.handleClick} to={'/polls'}>Logout</NavLink>
     ) : (
       <div>
@@ -17,11 +16,11 @@ const Nav = Props =>
   </nav>;
 
 const mapStateToProps = state => ({
-  username: state.user.username,
+  user: state.user.username,
 });
 
 const mapDispatchToProps = dispatch => ({
-  handleClick: () => dispatch(logout()),
+  handleClick: () => dispatch(asyncLogout()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Nav);

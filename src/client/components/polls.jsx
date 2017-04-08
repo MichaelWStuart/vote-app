@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import { fetchPoll } from '../actions';
+import fetchPoll from '../actions/async-creators/fetch-poll';
 
 const PollsPage = Props =>
   <ul>

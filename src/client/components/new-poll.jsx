@@ -1,17 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
-
-import { newPoll } from '../actions';
+import newPoll from '../actions/async-creators/new-poll';
 
 const NewPollPage = Props =>
   <form onSubmit={Props.handleClick}>
     <input type="text" placeholder="title" name="title" />
     <input type="submit" />
   </form>;
-
-const mapStateToProps = state => ({
-  username: state.user.username,
-});
 
 const mapDispatchToProps = dispatch => ({
   handleClick: (event) => {
@@ -24,4 +19,4 @@ const mapDispatchToProps = dispatch => ({
   },
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(NewPollPage);
+export default connect(null, mapDispatchToProps)(NewPollPage);

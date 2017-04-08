@@ -7,7 +7,7 @@ const CurrentPollPage = Props =>
   </div>;
 
 const mapStateToProps = state => ({
-  poll: state.currentPoll,
+  poll: state.poll,
 });
 
 export default connect(mapStateToProps)(CurrentPollPage);

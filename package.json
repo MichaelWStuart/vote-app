@@ -26,8 +26,6 @@
     "express": "^4.15.2",
     "express-session": "^1.15.2",
     "isomorphic-fetch": "^2.2.1",
-    "local": "^0.3.3",
-    "mongo-connect": "^0.0.6",
     "mongoose": "^4.9.3",
     "passport": "^0.3.2",
     "passport-local": "^1.0.0",

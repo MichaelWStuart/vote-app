@@ -1,19 +1,28 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import { NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
-import asyncLogout from '../actions/async-creators/logout';
+import asyncLogout from '../actions/async-creators/user/logout';
 
-const Nav = Props =>
+const Nav = props =>
   <nav>
-    {Props.user ? (
-      <NavLink onClick={Props.handleClick} to={'/polls'}>Logout</NavLink>
+    <NavLink to={'/polls'}>Polls</NavLink>
+    {props.user ? (
+      <div>
+        <p>Logged in as {props.user}</p>
+        <NavLink onClick={props.handleClick} to={'/polls'}>Logout</NavLink>
+      </div>
     ) : (
       <div>
-        <NavLink to={'/sign-up'}>Sign Up</NavLink>
+        <NavLink to={'/register'}>Sign Up</NavLink>
         <NavLink to={'/login'}>Login</NavLink>
       </div>
     )}
   </nav>;
+
+Nav.propTypes = {
+  handleClick: PropTypes.func.isRequired,
+  user: PropTypes.string.isRequired,
+};
 
 const mapStateToProps = state => ({
   user: state.user.username,

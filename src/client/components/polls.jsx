@@ -1,22 +1,30 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
+import { NavLink } from 'react-router-dom';
 
-import fetchPoll from '../actions/async-creators/fetch-poll';
+const Polls = props =>
+  <div>
+    <ul>
+      {props.polls.map(poll =>
+        <NavLink key={poll.title} to={`/polls/${poll._id}`}>
+          <li>{poll.title}</li>
+        </NavLink>,
+      )}
+    </ul>
+    {props.user &&
+      <NavLink to={'/polls/new'}>
+        <button>New Poll</button>
+      </NavLink>}
+  </div>;
 
-const PollsPage = Props =>
-  <ul>
-    {Props.polls.map(poll =>
-      // eslint-disable-next-line
-      <li onClick={Props.handleClick} id={poll._id} key={poll.title}>{poll.title}</li>,
-    )}
-  </ul>;
+Polls.propTypes = {
+  polls: PropTypes.array.isRequired,
+  user: PropTypes.string.isRequired,
+};
 
 const mapStateToProps = state => ({
-  polls: state.polls.polls,
+  polls: state.polls,
+  user: state.user.username,
 });
 
-const mapDispatchToProps = dispatch => ({
-  handleClick: event => dispatch(fetchPoll(event.target.id)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(PollsPage);
+export default connect(mapStateToProps)(Polls);

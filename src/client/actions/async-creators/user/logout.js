@@ -1,5 +1,5 @@
 import fetch from 'isomorphic-fetch';
-import logout from '../sync-creators/logout';
+import logout from '../../sync-creators/user/logout';
 
 export default () =>
   dispatch =>

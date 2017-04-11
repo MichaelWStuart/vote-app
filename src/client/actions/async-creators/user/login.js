@@ -1,6 +1,6 @@
 import fetch from 'isomorphic-fetch';
-import login from '../sync-creators/login';
-import error from '../sync-creators/error';
+import login from '../../sync-creators/user/login';
+import error from '../../sync-creators/error';
 
 export default data =>
   dispatch =>

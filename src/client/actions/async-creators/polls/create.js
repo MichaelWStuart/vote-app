@@ -1,10 +1,9 @@
 import fetch from 'isomorphic-fetch';
-import login from '../sync-creators/login';
-import error from '../sync-creators/error';
+import newPoll from '../../sync-creators/polls/create';
 
 export default data =>
   dispatch =>
-    fetch('/register', {
+    fetch('/polls/new', {
       method: 'POST',
       body: JSON.stringify(data),
       headers: {
@@ -13,10 +12,4 @@ export default data =>
       credentials: 'same-origin',
     })
     .then(res => res.json())
-    .then((json) => {
-      if (json.name === 'Success') {
-        dispatch(login(json.credentials));
-      } else {
-        dispatch(error(json.message));
-      }
-    });
+    .then(poll => dispatch(newPoll(poll)));

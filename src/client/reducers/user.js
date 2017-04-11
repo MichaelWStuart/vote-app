@@ -1,13 +1,13 @@
 import { LOGIN, LOGOUT } from '../actions/constants';
 
-const initialUserState = { username: '', _id: '' };
+const initial = { username: '', _id: '' };
 
-export default (state = initialUserState, action) => {
+export default (state = initial, action) => {
   switch (action.type) {
     case LOGIN:
       return { username: action.payload.username, _id: action.payload._id };
     case LOGOUT:
-      return initialUserState;
+      return initial;
     default: {
       return state;
     }

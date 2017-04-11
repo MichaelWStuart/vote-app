@@ -8,3 +8,7 @@ body {
   background: #EEE;
   margin: auto;
 }
+
+.new-option {
+  background: green;
+}

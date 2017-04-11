@@ -1,9 +1,9 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-import login from '../actions/async-creators/user/login';
+import register from '../actions/async-creators/user/register';
 import error from '../actions/sync-creators/error';
 
-class Login extends React.Component {
+class Register extends React.Component {
   componentWillUnmount() {
     this.props.clearError();
   }
@@ -23,7 +23,7 @@ class Login extends React.Component {
   }
 }
 
-Login.propTypes = {
+Register.propTypes = {
   handleClick: PropTypes.func.isRequired,
   clearError: PropTypes.func.isRequired,
   error: PropTypes.string.isRequired,
@@ -36,7 +36,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   handleClick: (event) => {
     event.preventDefault();
-    dispatch(login(
+    dispatch(register(
       {
         username: event.target.elements.username.value,
         password: event.target.elements.password.value,
@@ -46,4 +46,4 @@ const mapDispatchToProps = dispatch => ({
   clearError: () => dispatch(error('')),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
+export default connect(mapStateToProps, mapDispatchToProps)(Register);

@@ -16,7 +16,7 @@ import rootReducer from './reducers/root';
 
 const composeEnhancers = (isProd ? null : window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) || compose;
 // eslint-disable-next-line
-const store = createStore(rootReducer, { polls: { polls }, user }, composeEnhancers(applyMiddleware(thunkMiddleware, logger)));
+const store = createStore(rootReducer, { polls, user }, composeEnhancers(applyMiddleware(thunkMiddleware, logger)));
 
 const rootEl = document.querySelector(APP_CONTAINER_SELECTOR);
 

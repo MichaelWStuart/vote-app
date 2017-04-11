@@ -36,16 +36,12 @@ app.use(bodyParser.json());
 app.use(STATIC_PATH, express.static('dist'));
 app.use(STATIC_PATH, express.static('public'));
 
-app.get('/polls/:input', (req, res) => {
-  const _id = req.params.input;
-  Poll.findById({ _id }, (err, poll) => {
-    res.send(poll);
-  });
-});
-
 app.get('*', (req, res) => {
   const { user } = req;
-  Poll.find({}, (err, polls) => res.send(renderApp(APP_NAME, user, polls)));
+  Poll.find({}, (err, polls) => {
+    polls.forEach(poll => poll._options.forEach(option => option.votes = option.votes.length));
+    res.send(renderApp(APP_NAME, user, polls));
+  });
 });
 
 app.post('/register', (req, res) => {
@@ -79,9 +75,27 @@ app.post('/logout', (req, res) => {
   res.end();
 });
 
-app.post('/new-poll', (req, res) => {
-  Poll.create({ title: req.body.title, _authorId: req.user._id }, (err, poll) => {
+app.post('/polls/new', (req, res) => {
+  const title = req.body.title;
+  const _options = req.body._options;
+  const _authorId = req.user._id;
+  Poll.create({ title, _options, _authorId }, (err, poll) => {
     res.send(poll);
+  });
+});
+
+app.put('/polls/:_id', (req, res) => {
+  const _id = req.params._id;
+  const _options = req.params._options;
+  Poll.findByIdAndUpdate({ _id, _options }, (err, poll) => {
+    res.send(poll);
+  });
+});
+
+app.delete('/polls/:_id', (req, res) => {
+  const _id = req.params._id;
+  Poll.findByIdAndRemove({ _id }, () => {
+    res.send(_id);
   });
 });
 

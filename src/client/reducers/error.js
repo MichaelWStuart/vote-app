@@ -1,11 +1,11 @@
 import { ERROR } from '../actions/constants';
 
-const initialErrorState = { error: '' };
+const initial = '';
 
-export default (state = initialErrorState, action) => {
+export default (state = initial, action) => {
   switch (action.type) {
     case ERROR:
-      return { error: action.payload };
+      return action.payload;
     default: {
       return state;
     }

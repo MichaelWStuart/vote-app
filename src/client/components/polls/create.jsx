@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-import newPoll from '../actions/async-creators/polls/create';
+import newPoll from '../../actions/async-creators/polls/create';
 
 class NewPoll extends React.Component {
 
@@ -36,7 +36,7 @@ class NewPoll extends React.Component {
         if (element.name === 'title') {
           title = element.value;
         } else {
-          _options.push({ option: element.value, votes: [] });
+          _options.push({ name: element.value, votes: [] });
         }
       }
     }

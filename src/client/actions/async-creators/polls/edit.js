@@ -1,5 +1,5 @@
 import fetch from 'isomorphic-fetch';
-import editPoll from '../../sync-creators/polls/edit';
+import edit from '../../sync-creators/polls/edit';
 
 export default data =>
   dispatch =>
@@ -12,4 +12,4 @@ export default data =>
       credentials: 'same-origin',
     })
     .then(res => res.json())
-    .then(poll => dispatch(editPoll(poll)));
+    .then(response => dispatch(edit(response)));

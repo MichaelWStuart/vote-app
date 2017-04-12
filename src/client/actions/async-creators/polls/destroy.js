@@ -1,5 +1,5 @@
 import fetch from 'isomorphic-fetch';
-import removePoll from '../../sync-creators/polls/destroy';
+import destroy from '../../sync-creators/polls/destroy';
 
 export default id =>
   dispatch =>
@@ -7,5 +7,4 @@ export default id =>
       method: 'DELETE',
       credentials: 'same-origin',
     })
-    .then(res => res.text())
-    .then(poll => dispatch(removePoll(poll)));
+    .then(dispatch(destroy(id)));

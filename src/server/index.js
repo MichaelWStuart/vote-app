@@ -11,7 +11,8 @@ import renderApp from './render-app';
 import User from './models/user';
 import Poll from './models/poll';
 import pollsRoutes from './routes/polls';
-import userRoutes from './routes/user';
+import usersRoutes from './routes/users';
+import authRoutes from './routes/auth';
 
 if (!isProd) require('dotenv').load();
 
@@ -37,7 +38,8 @@ app.use(bodyParser.json());
 app.use(STATIC_PATH, express.static('dist'));
 app.use(STATIC_PATH, express.static('public'));
 app.use('/polls', pollsRoutes);
-app.use(userRoutes);
+app.use('/users', usersRoutes);
+app.use('/auth', authRoutes);
 
 app.get('*', (req, res) => {
   const { user } = req;

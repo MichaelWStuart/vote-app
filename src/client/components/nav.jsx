@@ -13,8 +13,8 @@ const Nav = props =>
       </div>
     ) : (
       <div>
-        <NavLink to={'/register'}>Sign Up</NavLink>
-        <NavLink to={'/login'}>Login</NavLink>
+        <NavLink to={'/users/register'}>Sign Up</NavLink>
+        <NavLink to={'/auth/login'}>Login</NavLink>
       </div>
     )}
   </nav>;

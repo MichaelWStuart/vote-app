@@ -4,7 +4,7 @@ import error from '../../sync-creators/error';
 
 export default data =>
   dispatch =>
-    fetch('/register', {
+    fetch('/users/register', {
       method: 'POST',
       body: JSON.stringify(data),
       headers: {
@@ -13,10 +13,10 @@ export default data =>
       credentials: 'same-origin',
     })
     .then(res => res.json())
-    .then((json) => {
-      if (json.name === 'Success') {
-        dispatch(login(json.credentials));
+    .then((response) => {
+      if (response.success) {
+        dispatch(login(response.credentials));
       } else {
-        dispatch(error(json.message));
+        dispatch(error(response.message));
       }
     });

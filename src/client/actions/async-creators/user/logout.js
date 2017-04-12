@@ -3,8 +3,8 @@ import logout from '../../sync-creators/user/logout';
 
 export default () =>
   dispatch =>
-    fetch('/logout', {
+    fetch('/auth/logout', {
       method: 'POST',
       credentials: 'same-origin',
     })
-    .then(() => dispatch(logout()));
+    .then(dispatch(logout()));

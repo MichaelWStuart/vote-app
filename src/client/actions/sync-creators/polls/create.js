@@ -1,4 +1,4 @@
 import { createAction } from 'redux-actions';
-import { NEW_POLL } from '../../constants';
+import { CREATE_POLL } from '../../constants';
 
-export default createAction(NEW_POLL);
+export default createAction(CREATE_POLL);

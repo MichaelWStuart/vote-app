@@ -1,5 +1,5 @@
 import fetch from 'isomorphic-fetch';
-import newPoll from '../../sync-creators/polls/create';
+import create from '../../sync-creators/polls/create';
 
 export default data =>
   dispatch =>
@@ -12,4 +12,4 @@ export default data =>
       credentials: 'same-origin',
     })
     .then(res => res.json())
-    .then(poll => dispatch(newPoll(poll)));
+    .then(poll => dispatch(create(poll)));

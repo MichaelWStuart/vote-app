@@ -4,12 +4,13 @@ import { Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import Nav from './components/nav';
-import Polls from './components/polls';
+import AllPolls from './components/polls/all';
 import Login from './components/login';
 import Register from './components/register';
 import NotFound from './components/not-found';
-import NewPoll from './components/new-poll';
-import ViewPoll from './components/view-poll';
+import CreatePoll from './components/polls/create';
+import ViewPoll from './components/polls/view';
+import EditPoll from './components/polls/edit';
 
 class App extends React.Component {
   componentWillReceiveProps(nextProps) {
@@ -25,11 +26,12 @@ class App extends React.Component {
       <div>
         <Nav />
         <Switch>
-          <Route path={'/polls/new'} component={NewPoll} />
-          <Route path={'/polls/:id'} component={ViewPoll} />
-          <Route path={'/polls'} exact component={Polls} />
-          <Route path={'/login'} component={Login} />
-          <Route path={'/register'} component={Register} />
+          <Route path={'/polls/create'} component={CreatePoll} />
+          <Route path={'/polls/:_id/edit'} component={EditPoll} />
+          <Route path={'/polls/:_id'} component={ViewPoll} />
+          <Route path={'/polls'} exact component={AllPolls} />
+          <Route path={'/auth/login'} component={Login} />
+          <Route path={'/users/register'} component={Register} />
           <Route component={NotFound} />
         </Switch>
       </div>

@@ -1,6 +1,6 @@
 export const LOGIN = 'LOGIN';
 export const LOGOUT = 'LOGOUT';
-export const NEW_POLL = 'NEW POLL';
-export const REMOVE_POLL = 'REMOVE_POLL';
+export const CREATE_POLL = 'CREATE POLL';
 export const EDIT_POLL = 'EDIT POLL';
+export const DESTROY_POLL = 'DESTROY_POLL';
 export const ERROR = 'ERROR';

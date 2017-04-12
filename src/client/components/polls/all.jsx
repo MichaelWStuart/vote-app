@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 
-const Polls = props =>
+const AllPolls = props =>
   <div>
     <ul>
       {props.polls.map(poll =>
@@ -12,12 +12,12 @@ const Polls = props =>
       )}
     </ul>
     {props.user &&
-      <NavLink to={'/polls/new'}>
+      <NavLink to={'/polls/create'}>
         <button>New Poll</button>
       </NavLink>}
   </div>;
 
-Polls.propTypes = {
+AllPolls.propTypes = {
   polls: PropTypes.array.isRequired,
   user: PropTypes.string.isRequired,
 };
@@ -27,4 +27,4 @@ const mapStateToProps = state => ({
   user: state.user.username,
 });
 
-export default connect(mapStateToProps)(Polls);
+export default connect(mapStateToProps)(AllPolls);

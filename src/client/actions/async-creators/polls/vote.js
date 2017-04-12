@@ -1,12 +1,12 @@
 import fetch from 'isomorphic-fetch';
-import login from '../../sync-creators/user/login';
 import error from '../../sync-creators/error';
+import edit from '../../sync-creators/polls/edit';
 
-export default data =>
+export default (poll, pollIndex, optionIndex, voterId) =>
   dispatch =>
-    fetch('/auth/login', {
-      method: 'POST',
-      body: JSON.stringify(data),
+    fetch(`/polls/${poll._id}/vote`, {
+      method: 'PUT',
+      body: JSON.stringify({ pollIndex, optionIndex, voterId }),
       headers: {
         'Content-Type': 'application/json; charset=utf-8',
       },
@@ -15,7 +15,7 @@ export default data =>
     .then(res => res.json())
     .then((response) => {
       if (response.success) {
-        dispatch(login(response.credentials));
+        dispatch(edit(response.data));
         dispatch(error(''));
       } else {
         dispatch(error(response.message));

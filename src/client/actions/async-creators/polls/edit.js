@@ -1,15 +1,17 @@
 import fetch from 'isomorphic-fetch';
 import edit from '../../sync-creators/polls/edit';
 
-export default data =>
+export default poll =>
   dispatch =>
-    fetch(`/polls/${data.id}`, {
+    fetch(`/polls/${poll._id}`, {
       method: 'PUT',
-      body: JSON.stringify(data),
+      body: JSON.stringify(poll._options),
       headers: {
         'Content-Type': 'application/json; charset=utf-8',
       },
       credentials: 'same-origin',
     })
     .then(res => res.json())
-    .then(response => dispatch(edit(response)));
+    .then((resPoll) => {
+      dispatch(edit(resPoll));
+    });

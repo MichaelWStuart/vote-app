@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-import newPoll from '../../actions/async-creators/polls/create';
+import create from '../../actions/async-creators/polls/create';
 
 class NewPoll extends React.Component {
 
@@ -13,7 +13,7 @@ class NewPoll extends React.Component {
     this.handleAddClick = this.handleAddClick.bind(this);
     this.handleDeleteClick = this.handleDeleteClick.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.state = { error: '', _options: [NewPoll.generateKey()] };
+    this.state = { error: '', _options: [NewPoll.generateKey(), NewPoll.generateKey()] };
   }
 
   handleAddClick(event) {
@@ -49,19 +49,22 @@ class NewPoll extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="create-edit-poll-page">
         {this.state.error &&
-          <p>{this.state.error}</p>}
+          <p className="flash-error-box">{this.state.error}</p>}
+        <h1 className="create-edit-page-title">Create Poll</h1>
         <form onSubmit={this.handleSubmit}>
-          <input placeholder="title" name="title" />
-          {this.state._options.map(option =>
-            <div key={option._id}>
-              <input />
-              <button onClick={() => this.handleDeleteClick(option._id)}>Delete</button>
+          <input id="create-edit-poll-title-input" placeholder="Title" name="title" />
+          {this.state._options.map((option, index) =>
+            <div className="create-edit-option-row" key={option._id}>
+              <input className="create-edit-option-input" placeholder={`Option ${index + 1}`} />
+              <button className="create-edit-option-delete-button" onClick={() => this.handleDeleteClick(option._id)}>X</button>
             </div>,
           )}
-          <button onClick={this.handleAddClick}>Add Option</button>
-          <button>Save</button>
+          <div className="create-edit-button-row">
+            <button className="create-edit-add-button" onClick={this.handleAddClick}>Add Option</button>
+            <button className="create-edit-save-button">Save</button>
+          </div>
         </form>
       </div>
     );
@@ -70,10 +73,11 @@ class NewPoll extends React.Component {
 
 NewPoll.propTypes = {
   dispatchSubmit: PropTypes.func.isRequired,
+  history: PropTypes.object.isRequired,
 };
 
 const mapDispatchToProps = dispatch => ({
-  dispatchSubmit: poll => dispatch(newPoll(poll)),
+  dispatchSubmit: poll => dispatch(create(poll)),
 });
 
 export default connect(null, mapDispatchToProps)(NewPoll);

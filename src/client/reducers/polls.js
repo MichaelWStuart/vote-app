@@ -8,7 +8,8 @@ export default (state = initial, action) => {
       return [...state].concat(action.payload);
     case EDIT_POLL: {
       const newState = [...state];
-      newState.splice(action.payload.pollIndex, 1, action.payload.updatedPoll);
+      const pollIndex = newState.findIndex(poll => poll._id === action.payload._id);
+      newState.splice(pollIndex, 1, action.payload);
       return newState;
     }
     case DESTROY_POLL:

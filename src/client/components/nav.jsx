@@ -4,17 +4,18 @@ import { connect } from 'react-redux';
 import asyncLogout from '../actions/async-creators/user/logout';
 
 const Nav = props =>
-  <nav>
-    <NavLink to={'/polls'}>Polls</NavLink>
+  <nav id="head-box">
+    {props.pathname !== '/polls' &&
+      <NavLink id="polls-link" to={'/polls'}>Polls</NavLink>}
     {props.user ? (
-      <div>
-        <p>Logged in as {props.user}</p>
-        <NavLink onClick={props.handleClick} to={'/polls'}>Logout</NavLink>
+      <div className="head-link-box">
+        <p id="head-current-user">Logged in as {props.user}</p>
+        <NavLink className="head-link" onClick={props.handleClick} to={'/polls'}>Logout</NavLink>
       </div>
     ) : (
-      <div>
-        <NavLink to={'/users/register'}>Sign Up</NavLink>
-        <NavLink to={'/auth/login'}>Login</NavLink>
+      <div className="head-link-box">
+        <NavLink className="head-link" to={'/users/register'}>Sign Up</NavLink>
+        <NavLink className="head-link" to={'/auth/login'}>Login</NavLink>
       </div>
     )}
   </nav>;
@@ -22,6 +23,7 @@ const Nav = props =>
 Nav.propTypes = {
   handleClick: PropTypes.func.isRequired,
   user: PropTypes.string.isRequired,
+  pathname: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = state => ({

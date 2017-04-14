@@ -24,7 +24,7 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        <Nav />
+        <Nav pathname={this.props.history.location.pathname} />
         <Switch>
           <Route path={'/polls/create'} component={CreatePoll} />
           <Route path={'/polls/:_id/edit'} component={EditPoll} />
@@ -43,7 +43,6 @@ App.propTypes = {
   user: PropTypes.string.isRequired,
   polls: PropTypes.array.isRequired,
   history: PropTypes.object.isRequired,
-  location: PropTypes.object.isRequired,
   match: PropTypes.object.isRequired,
 };
 

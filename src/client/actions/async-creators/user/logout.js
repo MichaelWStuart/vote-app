@@ -7,4 +7,6 @@ export default () =>
       method: 'POST',
       credentials: 'same-origin',
     })
-    .then(dispatch(logout()));
+    .then(() => {
+      dispatch(logout());
+    });

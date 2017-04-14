@@ -6,26 +6,40 @@ import destroy from '../../actions/async-creators/polls/destroy';
 
 const ViewPoll = (props) => {
   const poll = props.polls.filter(item => item._id === props.match.params._id)[0];
-  const pollIndex = props.polls.findIndex(item => item._id === poll._id);
+  const totalVotes = poll._options.reduce((count, option) => option.votes[0] + count, 0);
+  //eslint-disable-next-line
+  const voteWidth = (option) => {
+    return { width: `${(option.votes[0] / totalVotes) * 100}%` };
+  };
   return (
-    <div>
+    <div id="view-poll-page">
       {props.error &&
-        <p>{props.error}</p>}
-      <h1>{poll.title}</h1>
+        <p className="flash-error-box">{props.error}</p>}
+      <h1 id="view-poll-title">{poll.title}</h1>
       {poll._options.map((option, optionIndex) =>
         <div key={Math.random()}>
-          <p>{option.name}</p>
-          <p>votes: {Number.isInteger(option.votes[0]) ? option.votes[0] : 0}</p>
-          {props.user.username &&
-            <button
-              onClick={() => props.handleVoteClick(poll, pollIndex, optionIndex, props.user._id)}
-            >Vote</button>}
+          <p className="view-poll-option-name">{option.name}</p>
+          <div className="view-poll-vote-row">
+            <div className="view-poll-data-placeholder">
+              <div className="view-poll-data-container">
+                <div className="view-poll-data" style={voteWidth(option)} />
+                <div className="view-poll-vote-number">votes: {option.votes[0]}</div>
+              </div>
+            </div>
+            {props.user.username &&
+              <button
+                className="view-poll-vote-button"
+                onClick={() => props.handleVoteClick(poll, poll._options[optionIndex]._id, props.user._id)}
+              >Vote</button>}
+          </div>
         </div>,
       )}
       {poll._authorId === props.user._id &&
-        <div>
-          <NavLink to={`/polls/${props.match.params._id}/edit`}><button>Edit</button></NavLink>
-          <button onClick={() => props.handleDeleteClick(poll._id)}>Delete</button>
+        <div id="view-poll-button-box">
+          <NavLink to={`/polls/${props.match.params._id}/edit`}>
+            <button id="view-poll-edit-button">Edit</button>
+          </NavLink>
+          <button id="view-poll-delete-button" onClick={() => props.handleDeleteClick(poll._id)}>Delete</button>
         </div>}
     </div>
   );
@@ -47,8 +61,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  handleVoteClick: (poll, pollIndex, optionIndex, voterId) => {
-    dispatch(vote(poll, pollIndex, optionIndex, voterId));
+  handleVoteClick: (poll, optionId, voterId) => {
+    dispatch(vote(poll, optionId, voterId));
   },
   handleDeleteClick: id => dispatch(destroy(id)),
 });

@@ -3,17 +3,19 @@ import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 
 const AllPolls = props =>
-  <div>
-    <ul>
+  <div id="all-polls-page">
+    <h1 id="all-polls-title">Vote-App</h1>
+    <p id="all-polls-caption">View polls / register to Create or Vote:</p>
+    <ul id="all-polls-list">
       {props.polls.map(poll =>
-        <NavLink key={poll.title} to={`/polls/${poll._id}`}>
-          <li>{poll.title}</li>
+        <NavLink className="all-polls-link" key={poll._id} to={`/polls/${poll._id}`}>
+          <li className="all-polls-poll">{poll.title}</li>
         </NavLink>,
       )}
     </ul>
     {props.user &&
       <NavLink to={'/polls/create'}>
-        <button>New Poll</button>
+        <button id="all-polls-button">New Poll</button>
       </NavLink>}
   </div>;
 

@@ -16,6 +16,7 @@ export default data =>
     .then((response) => {
       if (response.success) {
         dispatch(login(response.credentials));
+        dispatch(error(''));
       } else {
         dispatch(error(response.message));
       }

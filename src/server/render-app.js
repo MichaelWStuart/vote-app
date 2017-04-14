@@ -7,6 +7,7 @@ const renderApp = (title, user = { username: '', _id: '' }, polls = []) =>
     <head>
       <title>${title}</title>
       <link rel="stylesheet" href="${STATIC_PATH}/css/style.css">
+      <link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet">
       <script>
         window.polls = JSON.parse('${JSON.stringify(polls)}');
         window.user = JSON.parse('${JSON.stringify(user)}');

@@ -69,12 +69,8 @@ body {
 }
 
 .user-auth-page .user-auth-button {
-  font-family: 'Quicksand', sans-serif;
-  height: 28px;
-  width: 100px;
-  font-size: 16px;
   display: block;
-  margin: auto;
+  margin: 28px auto;
 }
 
 #all-polls-page {
@@ -131,10 +127,6 @@ body {
 
 #all-polls-page #all-polls-button {
   margin-top: 40px;
-  font-family: 'Quicksand', sans-serif;
-  height: 28px;
-  width: 100px;
-  font-size: 16px;
 }
 
 .create-edit-poll-page {
@@ -194,26 +186,87 @@ body {
 }
 
 .create-edit-poll-page .create-edit-button-row {
-  width: 314px;
+  width: 312px;
   height: 30px;
   margin: auto;
 }
 
-.create-edit-poll-page .create-edit-add-button {
+#view-poll-page {
+  text-align: center;
+  padding-top: 60px;
+}
+
+#view-poll-page #view-poll-title {
+  margin: 0px 0px 20px 0px;
+  font-size: 70px;
+  color: #444;
+  text-shadow: 1px 1px #999;
+}
+
+#view-poll-page .view-poll-option-name {
+  margin: 0px auto 10px auto;
+}
+
+#view-poll-page .view-poll-data-placeholder {
+  width: 302px;
+  height: 25px;
+  background: #F5F5F5;
+  border: 1px solid #EEE;
+  box-shadow: 0px 0px 1px #EEE;
+  display: inline-block;
+  margin: auto;
+  border-radius: 2px;
+}
+
+#view-poll-page .view-poll-data-container {
+  width: 300px;
+  height: 23px;
+  margin: 1px;
+  border-radius: 2px;
+}
+
+#view-poll-page .view-poll-data {
+  height: 100%;
+  background: linear-gradient( 45deg, #666, #444 );
+  border-radius: 2px;
+}
+
+#view-poll-page .view-poll-vote-number {
+  position: relative;
+  bottom: 22px;
+  color: #BBB;
+}
+
+#view-poll-page .view-poll-vote-button {
   font-family: 'Quicksand', sans-serif;
-  height: 28px;
-  width: 100px;
-  font-size: 16px;
-  float: left;
+  height: 24px;
+  width: 50px;
+  font-size: 14px;
+  position: relative;
+  left: 15px;
+  bottom: 23px;
   cursor: pointer;
 }
 
-.create-edit-poll-page .create-edit-save-button {
+#view-poll-page #view-poll-button-box {
+  width: 302px;
+  margin: 20px auto 0px auto;
+  height: 30px;
+}
+
+.left-button {
+  float: left;
+}
+
+.right-button {
+  float: right;
+}
+
+.standard-button {
   font-family: 'Quicksand', sans-serif;
   height: 28px;
   width: 100px;
   font-size: 16px;
-  float: right;
   cursor: pointer;
 }
 
@@ -227,90 +280,4 @@ body {
   line-height: 30px;
   font-size: 20px;
   border-bottom: 1px solid rgb(200, 150, 150);
-}
-
-#view-poll-page {
-  text-align: center;
-  padding-top: 60px;
-}
-
-#view-poll-title {
-  margin: 0;
-  font-size: 70px;
-  color: #444;
-  text-shadow: 1px 1px #999;
-}
-
-.view-poll-option-name {
-  margin: 10px auto;
-}
-
-.view-poll-vote-row {
-  margin-bottom: 10px;
-}
-
-.view-poll-data-placeholder {
-  width: 302px;
-  height: 25px;
-  background: #F5F5F5;
-  border: 1px solid #EEE;
-  box-shadow: 0px 0px 1px #EEE;
-  display: inline-block;
-  margin: auto;
-  position: relative;
-  left: 23px;
-  border-radius: 2px;
-}
-
-.view-poll-data-container {
-  width: 300px;
-  height: 23px;
-  margin: 1px;
-  border-radius: 2px;
-}
-
-.view-poll-data {
-  height: 100%;
-  background: linear-gradient( 45deg, #666, #444 );
-  border-radius: 2px;
-}
-
-.view-poll-vote-number {
-  position: relative;
-  bottom: 22px;
-  color: #BBB;
-}
-
-.view-poll-vote-button {
-  font-family: 'Quicksand', sans-serif;
-  height: 24px;
-  width: 50px;
-  font-size: 14px;
-  position: relative;
-  left: 40px;
-  bottom: 23px;
-}
-
-#view-poll-button-box {
-  width: 304px;
-  margin: 20px auto 0px auto;
-  height: 30px;
-}
-
-#view-poll-button-box #view-poll-edit-button {
-  font-family: 'Quicksand', sans-serif;
-  height: 28px;
-  width: 100px;
-  font-size: 16px;
-  float: left;
-  cursor: pointer;
-}
-
-#view-poll-button-box #view-poll-delete-button {
-  font-family: 'Quicksand', sans-serif;
-  height: 28px;
-  width: 100px;
-  font-size: 16px;
-  float: right;
-  cursor: pointer;
 }

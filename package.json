@@ -1,7 +1,9 @@
 {
   "scripts": {
-    "start": "nodemon -e js,jsx --ignore lib --ignore dist --exec babel-node src/server",
-    "wds": "webpack-dev-server --progress"
+    "dev": "nodemon -e js,jsx --ignore lib --ignore dist --exec babel-node src/server",
+    "wds": "webpack-dev-server --progress",
+    "heroku-postbuild": "webpack -p --config ./webpack.config.babel.js --progress",
+    "start": "babel-node src/server/index.js"
   },
   "devDependencies": {
     "babel-cli": "^6.24.0",

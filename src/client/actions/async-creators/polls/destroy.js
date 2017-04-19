@@ -7,6 +7,4 @@ export default id =>
       method: 'DELETE',
       credentials: 'same-origin',
     })
-    .then(() => {
-      dispatch(destroy(id));
-    });
+    .then(() => dispatch(destroy(id)));

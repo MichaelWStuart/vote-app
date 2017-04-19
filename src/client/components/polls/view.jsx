@@ -3,51 +3,59 @@ import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import vote from '../../actions/async-creators/polls/vote';
 import destroy from '../../actions/async-creators/polls/destroy';
+import error from '../../actions/sync-creators/error';
 
-const ViewPoll = (props) => {
-  const poll = props.polls.filter(item => item._id === props.match.params._id)[0];
-  const totalVotes = poll._options.reduce((count, option) => option.votes[0] + count, 0);
-  //eslint-disable-next-line
-  const voteWidth = (option) => {
-    return { width: `${(option.votes[0] / totalVotes) * 100}%` };
-  };
-  return (
-    <div id="view-poll-page">
-      {props.error &&
-        <p className="flash-error-box">{props.error}</p>}
-      <h1 id="view-poll-title">{poll.title}</h1>
-      {poll._options.map((option, optionIndex) =>
-        <div key={Math.random()}>
-          <p className="view-poll-option-name">{option.name}</p>
-          <div className="view-poll-vote-row">
-            <div className="view-poll-data-placeholder">
-              <div className="view-poll-data-container">
-                <div className="view-poll-data" style={voteWidth(option)} />
-                <div className="view-poll-vote-number">votes: {option.votes[0]}</div>
+class ViewPoll extends React.Component {
+
+  static voteWidth(option, totalVotes) {
+    return option.votes ? `${(option.votes / totalVotes) * 100}%` : '0%';
+  }
+
+  componentWillUnmount() {
+    this.props.clearError();
+  }
+
+  render() {
+    const poll = this.props.polls.find(item => item._id === this.props.match.params._id);
+    return (
+      <div id="view-poll-page">
+        {this.props.error &&
+          <p className="flash-error-box">{this.props.error}</p>}
+        <h1 id="view-poll-title">{poll.title}</h1>
+        {poll._options.map((option, optionIndex) =>
+          <div key={option._id}>
+            <p className="view-poll-option-name">{option.name}</p>
+            <div className="view-poll-vote-row">
+              <div className="view-poll-data-placeholder">
+                <div className="view-poll-data-container">
+                  <div className="view-poll-data" style={{ width: ViewPoll.voteWidth(option, poll.totalVotes) }} />
+                  <div className="view-poll-vote-number">votes: {option.votes}</div>
+                </div>
               </div>
+              {this.props.user.username &&
+                <button
+                  className="view-poll-vote-button"
+                  onClick={() => this.props.handleVoteClick(poll, poll._options[optionIndex]._id, this.props.user._id)}
+                >Vote</button>}
             </div>
-            {props.user.username &&
-              <button
-                className="view-poll-vote-button"
-                onClick={() => props.handleVoteClick(poll, poll._options[optionIndex]._id, props.user._id)}
-              >Vote</button>}
-          </div>
-        </div>,
-      )}
-      {poll._authorId === props.user._id &&
-        <div id="view-poll-button-box">
-          <NavLink to={`/polls/${props.match.params._id}/edit`}>
-            <button id="view-poll-edit-button">Edit</button>
-          </NavLink>
-          <button id="view-poll-delete-button" onClick={() => props.handleDeleteClick(poll._id)}>Delete</button>
-        </div>}
-    </div>
-  );
-};
+          </div>,
+        )}
+        {poll._authorId === this.props.user._id &&
+          <div id="view-poll-button-box">
+            <NavLink to={`/polls/${this.props.match.params._id}/edit`}>
+              <button className="left-button standard-button">Edit</button>
+            </NavLink>
+            <button className="right-button standard-button" onClick={() => this.props.handleDeleteClick(poll._id)}>Delete</button>
+          </div>}
+      </div>
+    );
+  }
+}
 
 ViewPoll.propTypes = {
   handleVoteClick: PropTypes.func.isRequired,
   handleDeleteClick: PropTypes.func.isRequired,
+  clearError: PropTypes.func.isRequired,
   match: PropTypes.object.isRequired,
   user: PropTypes.object.isRequired,
   polls: PropTypes.array.isRequired,
@@ -65,6 +73,7 @@ const mapDispatchToProps = dispatch => ({
     dispatch(vote(poll, optionId, voterId));
   },
   handleDeleteClick: id => dispatch(destroy(id)),
+  clearError: () => dispatch(error('')),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ViewPoll);

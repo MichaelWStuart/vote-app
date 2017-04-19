@@ -12,6 +12,4 @@ export default data =>
       credentials: 'same-origin',
     })
     .then(res => res.json())
-    .then((resPoll) => {
-      dispatch(create(resPoll));
-    });
+    .then(resPoll => dispatch(create(resPoll)));

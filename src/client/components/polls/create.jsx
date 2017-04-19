@@ -62,8 +62,8 @@ class NewPoll extends React.Component {
             </div>,
           )}
           <div className="create-edit-button-row">
-            <button className="create-edit-add-button" onClick={this.handleAddClick}>Add Option</button>
-            <button className="create-edit-save-button">Save</button>
+            <button className="left-button standard-button" onClick={this.handleAddClick}>Add Option</button>
+            <button className="right-button standard-button">Save</button>
           </div>
         </form>
       </div>

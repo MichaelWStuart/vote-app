@@ -1,15 +1,14 @@
 import { Router } from 'express';
 import Poll from '../models/poll';
 
+import { normalizePoll } from '../helpers/polls';
+
 const router = Router();
 
 router.post('/new', (req, res) => {
   const { title, _options } = req.body;
   const _authorId = req.user._id;
-  Poll.create({ title, _options, _authorId }, (err, resPoll) => {
-    resPoll._options.forEach(option => option.votes = option.votes.length);
-    res.send(resPoll);
-  });
+  Poll.create({ title, _options, _authorId }, (err, resPoll) => res.send(normalizePoll(resPoll)));
 });
 
 router.put('/:_id/vote', (req, res) => {
@@ -23,10 +22,7 @@ router.put('/:_id/vote', (req, res) => {
     } else {
       poll._options.forEach(option => option.votes = option.votes.filter(voter => voter !== voterId));
       poll._options[optionIndex].votes.push(voterId);
-      poll.save((saveErr, resPoll) => {
-        resPoll._options.forEach(option => option.votes = option.votes.length);
-        res.send({ success: true, resPoll });
-      });
+      poll.save((saveErr, resPoll) => res.send({ success: true, resPoll: normalizePoll(resPoll) }));
     }
   });
 });
@@ -35,7 +31,7 @@ router.put('/:_id', (req, res) => {
   const _id = req.params._id;
   Poll.findById(_id, (findErr, poll) => {
     poll._options = req.body;
-    poll.save((saveErr, resPoll) => res.send(resPoll));
+    poll.save((saveErr, resPoll) => res.send(normalizePoll(resPoll)));
   });
 });
 

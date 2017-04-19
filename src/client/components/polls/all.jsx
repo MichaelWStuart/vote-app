@@ -15,7 +15,7 @@ const AllPolls = props =>
     </ul>
     {props.user &&
       <NavLink to={'/polls/create'}>
-        <button id="all-polls-button">New Poll</button>
+        <button className="standard-button" id="all-polls-button">Create Poll</button>
       </NavLink>}
   </div>;
 

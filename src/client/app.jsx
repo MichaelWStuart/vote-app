@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import { Switch, withRouter } from 'react-router';
+import { Switch, withRouter, Redirect } from 'react-router';
 import { Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 
@@ -32,6 +32,7 @@ class App extends React.Component {
           <Route path={'/polls'} exact component={AllPolls} />
           <Route path={'/auth/login'} component={Login} />
           <Route path={'/users/register'} component={Register} />
+          <Redirect from={'/'} to={'/polls'} />
           <Route component={NotFound} />
         </Switch>
       </div>

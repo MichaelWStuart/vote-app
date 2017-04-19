@@ -14,6 +14,8 @@ import pollsRoutes from './routes/polls';
 import usersRoutes from './routes/users';
 import authRoutes from './routes/auth';
 
+import { normalizePolls } from './helpers/polls';
+
 if (!isProd) require('dotenv').load();
 
 const mongodb = `mongodb://${process.env.UNAME}:${process.env.PASS}@${process.env.LOC}:${process.env.MDBPORT}/vote-app`;
@@ -42,10 +44,8 @@ app.use('/users', usersRoutes);
 app.use('/auth', authRoutes);
 
 app.get('*', (req, res) => {
-  const { user } = req;
   Poll.find({}, (err, polls) => {
-    polls.forEach(poll => poll._options.forEach(option => option.votes = option.votes.length));
-    res.send(renderApp(APP_NAME, user, polls));
+    res.send(renderApp(APP_NAME, req.user, normalizePolls(polls)));
   });
 });
 

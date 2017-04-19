@@ -18,7 +18,7 @@ class Login extends React.Component {
         <form onSubmit={this.props.handleClick}>
           <input className="user-auth-input" type="text" placeholder="username" name="username" />
           <input className="user-auth-input" type="password" placeholder="password" name="password" />
-          <input className="user-auth-button" type="submit" />
+          <input className="user-auth-button standard-button" type="submit" />
         </form>
       </div>
     );

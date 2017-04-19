@@ -1,7 +1,7 @@
 import fetch from 'isomorphic-fetch';
 import edit from '../../sync-creators/polls/edit';
 
-export default poll =>
+export default (poll, history) =>
   dispatch =>
     fetch(`/polls/${poll._id}`, {
       method: 'PUT',
@@ -12,6 +12,5 @@ export default poll =>
       credentials: 'same-origin',
     })
     .then(res => res.json())
-    .then((resPoll) => {
-      dispatch(edit(resPoll));
-    });
+    .then(resPoll => dispatch(edit(resPoll)))
+    .then(() => history.push(`/polls/${poll._id}`));

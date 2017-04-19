@@ -4,4 +4,3 @@ export const CREATE_POLL = 'CREATE POLL';
 export const EDIT_POLL = 'EDIT POLL';
 export const DESTROY_POLL = 'DESTROY_POLL';
 export const ERROR = 'ERROR';
-export const REROUTE = 'REROUTE';

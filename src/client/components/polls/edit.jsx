@@ -7,6 +7,7 @@ class EditPoll extends React.Component {
     super(props);
     const poll = this.props.polls.filter(item => item._id === this.props.match.params._id)[0];
     this.handleAddClick = this.handleAddClick.bind(this);
+    this.handleKeyPress = this.handleKeyPress.bind(this);
     this.handleDeleteClick = this.handleDeleteClick.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.state = {
@@ -16,11 +17,21 @@ class EditPoll extends React.Component {
     };
   }
 
-  handleAddClick(event) {
-    event.preventDefault();
+  componentDidUpdate() {
+    if (this.state._options.length !== 0) {
+      this[`input${this.state._options.length - 1}`].focus();
+    }
+  }
+
+  addInput() {
     this.setState({ _options: this.state._options.concat({
       _id: Math.random(),
     }) });
+  }
+
+  handleAddClick(event) {
+    event.preventDefault();
+    this.addInput();
   }
 
   handleDeleteClick(optionId) {
@@ -40,9 +51,16 @@ class EditPoll extends React.Component {
     }
     if (_options.length > 1) {
       poll._options = _options;
-      this.props.dispatchSubmit(poll);
+      this.props.dispatchSubmit(poll, this.props.history);
     } else {
       this.setState({ error: 'Poll must contain at least two options' });
+    }
+  }
+
+  handleKeyPress(event) {
+    event.preventDefault();
+    if (event.key === 'Enter') {
+      this.addInput();
     }
   }
 
@@ -56,13 +74,13 @@ class EditPoll extends React.Component {
         <form onSubmit={this.handleSubmit}>
           {this.state._options.map((option, index) =>
             <div key={option._id}>
-              <input className="create-edit-option-input" defaultValue={option.name} placeholder={`Option ${index + 1}`} />
+              <input ref={input => this[`input${index}`] = input} onKeyPress={this.handleKeyPress} className="create-edit-option-input" defaultValue={option.name} placeholder={`Option ${index + 1}`} />
               <button className="create-edit-option-delete-button" onClick={() => this.handleDeleteClick(option._id)}>X</button>
             </div>,
           )}
           <div className="create-edit-button-row">
-            <button className="create-edit-add-button" onClick={this.handleAddClick}>Add Option</button>
-            <button className="create-edit-save-button">Save</button>
+            <button className="left-button standard-button" onClick={this.handleAddClick}>Add Option</button>
+            <button className="right-button standard-button">Save</button>
           </div>
         </form>
       </div>
@@ -82,7 +100,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  dispatchSubmit: poll => dispatch(edit(poll)),
+  dispatchSubmit: (poll, history) => dispatch(edit(poll, history)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditPoll);

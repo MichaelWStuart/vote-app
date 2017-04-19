@@ -8,8 +8,7 @@ export default (state = initial, action) => {
       return [...state].concat(action.payload);
     case EDIT_POLL: {
       const newState = [...state];
-      const pollIndex = newState.findIndex(poll => poll._id === action.payload._id);
-      newState.splice(pollIndex, 1, action.payload);
+      Object.assign(newState.find(poll => poll._id === action.payload._id), action.payload);
       return newState;
     }
     case DESTROY_POLL:

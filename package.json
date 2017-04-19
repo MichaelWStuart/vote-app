@@ -42,5 +42,9 @@
     "redux-actions": "^2.0.1",
     "redux-logger": "^3.0.1",
     "redux-thunk": "^2.2.0"
-  }
+  },
+  "engines": {
+    "node": "7.x",
+    "yarn": "0.20.3"
+  },
 }

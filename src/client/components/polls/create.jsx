@@ -62,6 +62,9 @@ class NewPoll extends React.Component {
         }
       }
     }
+    if (title.length > 20) {
+      return this.setState({ error: 'Poll title must be under 20 characters long' });
+    }
     if (title && _options.length > 1) {
       this.props.dispatchSubmit({ title, _options });
     } else {

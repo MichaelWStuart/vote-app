@@ -9,7 +9,6 @@ class Register extends React.Component {
     this.props.dispatchError('');
   }
 
-  //eslint-disable-next-line
   validateFormData(event, props) {
     event.preventDefault();
     const username = event.target.elements.username.value;
@@ -17,8 +16,8 @@ class Register extends React.Component {
     if (username.match(/[^\w-\/ ]+/g)) {
       return props.dispatchError('Username may only contain letters, numbers, underscores and hyphens.');
     }
-    if (username.length < 4) {
-      return props.dispatchError('Username must be at least 4 characters long.');
+    if ((username.length < 4) || (username.length > 20)) {
+      return props.dispatchError('Username must be between 4 and 20 characters long.');
     }
     if (password.length < 6) {
       return props.dispatchError('Password must be at least 6 characters long.');

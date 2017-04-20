@@ -11,14 +11,32 @@ class NewPoll extends React.Component {
   constructor(props) {
     super(props);
     this.handleAddClick = this.handleAddClick.bind(this);
+    this.handleInputKeyPress = this.handleInputKeyPress.bind(this);
+    this.handleTitleKeyPress = this.handleTitleKeyPress.bind(this);
     this.handleDeleteClick = this.handleDeleteClick.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.state = { error: '', _options: [NewPoll.generateKey(), NewPoll.generateKey()] };
   }
 
+  componentDidMount() {
+    this.title.focus();
+  }
+
+  componentDidUpdate() {
+    if (this.state._options.length !== 0) {
+      this[`input${this.state._options.length - 1}`].focus();
+    }
+  }
+
+  addInput() {
+    this.setState({ _options: this.state._options.concat({
+      _id: Math.random(),
+    }) });
+  }
+
   handleAddClick(event) {
     event.preventDefault();
-    this.setState({ _options: this.state._options.concat(NewPoll.generateKey()) });
+    this.addInput();
   }
 
   handleDeleteClick(optionId) {
@@ -47,6 +65,24 @@ class NewPoll extends React.Component {
     }
   }
 
+  handleTitleKeyPress(event) {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      this.input0 ? this.input0.focus() : this.addInput()
+    }
+  }
+
+  handleInputKeyPress(event, index) {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      if (event.target === this[`input${this.state._options.length - 1}`]) {
+        this.addInput();
+      } else {
+        this[`input${index + 1}`].focus();
+      }
+    }
+  }
+
   render() {
     return (
       <div className="create-edit-poll-page">
@@ -54,10 +90,10 @@ class NewPoll extends React.Component {
           <p className="flash-error-box">{this.state.error}</p>}
         <h1 className="create-edit-page-title">Create Poll</h1>
         <form onSubmit={this.handleSubmit}>
-          <input id="create-edit-poll-title-input" placeholder="Title" name="title" />
+          <input id="create-edit-poll-title-input" onKeyPress={this.handleTitleKeyPress} ref={title => this.title = title} placeholder="Title" name="title" />
           {this.state._options.map((option, index) =>
             <div className="create-edit-option-row" key={option._id}>
-              <input className="create-edit-option-input" placeholder={`Option ${index + 1}`} />
+              <input ref={input => this[`input${index}`] = input} onKeyPress={event => this.handleInputKeyPress(event, index)} className="create-edit-option-input" placeholder={`Option ${index + 1}`} />
               <button className="create-edit-option-delete-button" onClick={() => this.handleDeleteClick(option._id)}>X</button>
             </div>,
           )}

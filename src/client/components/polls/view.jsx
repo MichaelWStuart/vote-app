@@ -11,6 +11,10 @@ class ViewPoll extends React.Component {
     return option.votes ? `${(option.votes / totalVotes) * 100}%` : '0%';
   }
 
+  shouldComponentUpdate(nextProps) {
+    return !!nextProps.polls.find(item => item._id === nextProps.match.params._id);
+  }
+
   componentWillUnmount() {
     this.props.clearError();
   }
@@ -45,7 +49,7 @@ class ViewPoll extends React.Component {
             <NavLink to={`/polls/${this.props.match.params._id}/edit`}>
               <button className="left-button standard-button">Edit</button>
             </NavLink>
-            <button className="right-button standard-button" onClick={() => this.props.handleDeleteClick(poll._id)}>Delete</button>
+            <button className="right-button standard-button" onClick={(event) => { event.preventDefault(); this.props.handleDeleteClick(poll._id, this.props.history); }}>Delete</button>
           </div>}
       </div>
     );
@@ -60,6 +64,7 @@ ViewPoll.propTypes = {
   user: PropTypes.object.isRequired,
   polls: PropTypes.array.isRequired,
   error: PropTypes.string.isRequired,
+  history: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -72,7 +77,7 @@ const mapDispatchToProps = dispatch => ({
   handleVoteClick: (poll, optionId, voterId) => {
     dispatch(vote(poll, optionId, voterId));
   },
-  handleDeleteClick: id => dispatch(destroy(id)),
+  handleDeleteClick: (id, history) => dispatch(destroy(id, history)),
   clearError: () => dispatch(error('')),
 });
 

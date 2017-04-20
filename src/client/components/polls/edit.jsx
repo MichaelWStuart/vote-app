@@ -57,10 +57,14 @@ class EditPoll extends React.Component {
     }
   }
 
-  handleKeyPress(event) {
-    event.preventDefault();
+  handleKeyPress(event, index) {
     if (event.key === 'Enter') {
-      this.addInput();
+      event.preventDefault();
+      if (event.target === this[`input${this.state._options.length - 1}`]) {
+        this.addInput();
+      } else {
+        this[`input${index + 1}`].focus();
+      }
     }
   }
 
@@ -74,7 +78,7 @@ class EditPoll extends React.Component {
         <form onSubmit={this.handleSubmit}>
           {this.state._options.map((option, index) =>
             <div key={option._id}>
-              <input ref={input => this[`input${index}`] = input} onKeyPress={this.handleKeyPress} className="create-edit-option-input" defaultValue={option.name} placeholder={`Option ${index + 1}`} />
+              <input ref={input => this[`input${index}`] = input} onKeyPress={event => this.handleKeyPress(event, index)} className="create-edit-option-input" defaultValue={option.name} placeholder={`Option ${index + 1}`} />
               <button className="create-edit-option-delete-button" onClick={() => this.handleDeleteClick(option._id)}>X</button>
             </div>,
           )}

@@ -6,7 +6,24 @@ import error from '../actions/sync-creators/error';
 class Register extends React.Component {
 
   componentWillUnmount() {
-    this.props.clearError();
+    this.props.dispatchError('');
+  }
+
+  //eslint-disable-next-line
+  validateFormData(event, props) {
+    event.preventDefault();
+    const username = event.target.elements.username.value;
+    const password = event.target.elements.password.value;
+    if (username.match(/[^\w-\/ ]+/g)) {
+      return props.dispatchError('Username may only contain letters, numbers, underscores and hyphens.');
+    }
+    if (username.length < 4) {
+      return props.dispatchError('Username must be at least 4 characters long.');
+    }
+    if (password.length < 6) {
+      return props.dispatchError('Password must be at least 6 characters long.');
+    }
+    props.dispatchRegister(username, password);
   }
 
   render() {
@@ -15,7 +32,7 @@ class Register extends React.Component {
         {this.props.error &&
           <p className="flash-error-box">{this.props.error}</p>}
         <h1 className="user-auth-title">Register</h1>
-        <form onSubmit={this.props.handleClick}>
+        <form onSubmit={event => this.validateFormData(event, this.props)}>
           <input className="user-auth-input" type="text" placeholder="username" name="username" />
           <input className="user-auth-input" type="password" placeholder="password" name="password" />
           <input className="user-auth-button standard-button" type="submit" />
@@ -26,8 +43,8 @@ class Register extends React.Component {
 }
 
 Register.propTypes = {
-  handleClick: PropTypes.func.isRequired,
-  clearError: PropTypes.func.isRequired,
+  dispatchRegister: PropTypes.func.isRequired,
+  dispatchError: PropTypes.func.isRequired,
   error: PropTypes.string.isRequired,
 };
 
@@ -36,16 +53,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  handleClick: (event) => {
-    event.preventDefault();
-    dispatch(register(
-      {
-        username: event.target.elements.username.value,
-        password: event.target.elements.password.value,
-      },
-    ));
-  },
-  clearError: () => dispatch(error('')),
+  dispatchRegister: (username, password) => dispatch(register({ username, password })),
+  dispatchError: message => dispatch(error(message)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Register);

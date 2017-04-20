@@ -1,6 +1,5 @@
 import React, { PropTypes } from 'react';
-import { Switch, withRouter, Redirect } from 'react-router';
-import { Route } from 'react-router-dom';
+import { Route, Switch, withRouter, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import Nav from './components/nav';
@@ -52,4 +51,4 @@ const mapStateToProps = state => ({
   polls: state.polls,
 });
 
-export default connect(mapStateToProps)(withRouter(App));
+export default withRouter(connect(mapStateToProps)(App));

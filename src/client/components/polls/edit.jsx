@@ -17,6 +17,10 @@ class EditPoll extends React.Component {
     };
   }
 
+  componentWillMount() {
+    (this.props.user._id !== this.state.poll._authorId) && this.props.history.push('/polls');
+  }
+
   componentDidUpdate() {
     if (this.state._options.length !== 0) {
       this[`input${this.state._options.length - 1}`].focus();
@@ -97,10 +101,12 @@ EditPoll.propTypes = {
   match: PropTypes.object.isRequired,
   polls: PropTypes.array.isRequired,
   history: PropTypes.object.isRequired,
+  user: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = state => ({
   polls: state.polls,
+  user: state.user,
 });
 
 const mapDispatchToProps = dispatch => ({

@@ -11,6 +11,10 @@ class ViewPoll extends React.Component {
     return option.votes ? `${(option.votes / totalVotes) * 100}%` : '0%';
   }
 
+  componentWillMount() {
+    !this.props.polls.find(item => item._id === this.props.match.params._id) && this.props.history.push('/polls');
+  }
+
   shouldComponentUpdate(nextProps) {
     return !!nextProps.polls.find(item => item._id === nextProps.match.params._id);
   }

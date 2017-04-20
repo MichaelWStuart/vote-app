@@ -18,6 +18,10 @@ class NewPoll extends React.Component {
     this.state = { error: '', _options: [NewPoll.generateKey(), NewPoll.generateKey()] };
   }
 
+  componentWillMount() {
+    !this.props.user && this.props.history.push('/polls');
+  }
+
   componentDidMount() {
     this.title.focus();
   }
@@ -68,7 +72,7 @@ class NewPoll extends React.Component {
   handleTitleKeyPress(event) {
     if (event.key === 'Enter') {
       event.preventDefault();
-      this.input0 ? this.input0.focus() : this.addInput()
+      this.input0 ? this.input0.focus() : this.addInput();
     }
   }
 
@@ -110,10 +114,15 @@ class NewPoll extends React.Component {
 NewPoll.propTypes = {
   dispatchSubmit: PropTypes.func.isRequired,
   history: PropTypes.object.isRequired,
+  user: PropTypes.string.isRequired,
 };
+
+const mapStateToProps = state => ({
+  user: state.user.username,
+});
 
 const mapDispatchToProps = dispatch => ({
   dispatchSubmit: poll => dispatch(create(poll)),
 });
 
-export default connect(null, mapDispatchToProps)(NewPoll);
+export default connect(mapStateToProps, mapDispatchToProps)(NewPoll);

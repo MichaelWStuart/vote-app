@@ -1,3 +1,4 @@
+import {} from 'dotenv/config';
 import express from 'express';
 import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
@@ -15,8 +16,6 @@ import usersRoutes from './routes/users';
 import authRoutes from './routes/auth';
 
 import { normalizePolls } from './helpers/polls';
-
-if (!isProd) require('dotenv').load();
 
 const mongodb = `mongodb://${process.env.UNAME}:${process.env.PASS}@${process.env.LOC}:${process.env.MDBPORT}/vote-app`;
 mongoose.connect(mongodb);
